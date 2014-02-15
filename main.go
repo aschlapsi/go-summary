@@ -96,10 +96,11 @@ func getBestSentence(paragraph string, sentencesMap map[string]float64) string {
 	return bestSentence
 }
 
-func getSummary(title string, content string, sentencesMap map[string]float64) string {
+func getSummary(content string) string {
+	sentencesMap := getSentencesRanks(content)
 	paragraphs := splitContentToParagraphs(content)
 
-	summaryBuffer := bytes.NewBufferString(strings.TrimSpace(title))
+	summaryBuffer := bytes.NewBufferString("")
 	summaryBuffer.WriteString("\n")
 
 	for _, paragraph := range paragraphs {
@@ -114,7 +115,6 @@ func getSummary(title string, content string, sentencesMap map[string]float64) s
 }
 
 func main() {
-	title := "Swayy is a beautiful new dashboard for discovering and curating online content [Invites]"
 	content := `
   Lior Degani, the Co-Founder and head of Marketing of Swayy, pinged me last week when I was in California to tell me about his startup and give me beta access. I heard his pitch and was skeptical. I was also tired, cranky and missing my kids – so my frame of mind wasn’t the most positive.
 
@@ -156,12 +156,11 @@ func main() {
 
   Image credit: Thinkstock
   `
-	sentencesMap := getSentencesRanks(content)
-	summary := getSummary(title, content, sentencesMap)
+	summary := getSummary(content)
 
 	fmt.Println(summary)
 	fmt.Println()
-	fmt.Printf("Original length %d\n", len(title)+len(content))
+	fmt.Printf("Original length %d\n", len(content))
 	fmt.Printf("Summary length %d\n", len(summary))
-	fmt.Printf("Summary ratio: %.2f%%\n", (100 - (100 * (float64(len(summary)) / (float64(len(title) + len(content)))))))
+	fmt.Printf("Summary ratio: %.2f%%\n", (100 - (100 * (float64(len(summary)) / (float64(len(content)))))))
 }
