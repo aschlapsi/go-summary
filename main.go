@@ -7,7 +7,6 @@ import (
 	"github.com/deckarep/golang-set"
 	"io/ioutil"
 	"log"
-	"os"
 	"regexp"
 	"strings"
 )
